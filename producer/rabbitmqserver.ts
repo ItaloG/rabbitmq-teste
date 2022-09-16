@@ -12,7 +12,11 @@ export class RabbitMqServer {
     this.channel = await this.connection.createChannel();
   }
 
-  async publish(queue: string, message: string) {
-    return this.channel.exchan(queue, Buffer.from(message));
+  async publishInQueue(queue: string, message: string) {
+    return this.channel.sendToQueue(queue, Buffer.from(message));
+  }
+
+  async publishInExchange(exchange: string,queue: string, message: string) {
+    return this.channel.publish(exchange, queue, Buffer.from(message));
   }
 }
